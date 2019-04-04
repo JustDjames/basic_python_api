@@ -21,26 +21,34 @@ users = [
         "job": "Dancer"
     }
 ]
+class AllUsers(Resource):
+    # return all users. Use GET method
+    def get(self):
+        return users, 200
 
 class User(Resource):
+
+    # return specified user. Use GET method
     def get(self, name):
         for user in users:
             if(name == user["name"]):
                 return user, 200
         return "User not Found", 404
     
-    def post(self, name):
+    # create new user. Use POST method
+    def post(self, command):
         parser = reqparse.RequestParser()
+        parser.add_argument("name")
         parser.add_argument("age")
         parser.add_argument("job")
         args = parser.parse_args()
 
         for user in users:
-            if(name == user["name"]):
-                return "User with name {} already exists".format(name), 400
+            if(args["name"] == user["name"]):
+                return "User with name {} already exists".format(args["name"]), 400
         
         user = {
-            "name": name,
+            "name": args["name"],
             "age": args["age"],
             "job": args["job"]
         }
@@ -72,6 +80,6 @@ class User(Resource):
         users = [user for user in users if user["name"] !=name]
         return "{}  is deleted.".format(name), 200
     
-api.add_resource(User, "/user/<string:name>")
-
+api.add_resource(User, "/user/<string:command>")
+api.add_resource(AllUsers,"/users" )
 app.run(debug=True)
