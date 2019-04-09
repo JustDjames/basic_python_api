@@ -78,6 +78,18 @@ class UpdateUser(Resource):
                 user["job"] = args["job"]
                 return user, 200
         return "user doesn't exist, to create a new user use /newuser route", 404
+class Help(Resource):
+    def get(self):
+        helpMessage = "This is a Basic Api written in Python. It uses different routes to perform CRUD (Create, Read, Edit, and Delete) on a users list." \
+        "Below are the Routes, their functions and the HTTP methods needed:" \
+        "/help - Used to display this message - GET" \
+        "/users - returns the full list of users - GET" \
+        "/user/<name> - returns information for the specified user - GET" \
+        "/newuser - add a new user to the users list - POST (new user must be in JSON format)" \
+        "/user/<name>/update - updates the specified user with new infomation - PUT (new information must be in JSON format. Must include name even if name hasn't changed" \
+        "/user/<name>/delete - Deletes the specified user - DELETE)" 
+        return helpMessage, 200
+api.add_resource(Help, "/help")
 api.add_resource(User, "/user/<string:name>")
 api.add_resource(AllUsers,"/users" )
 api.add_resource(NewUser,"/newuser")
