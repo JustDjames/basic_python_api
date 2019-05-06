@@ -1,13 +1,38 @@
 div{
     text-align: center;
 }
+
 .background{
     background-color: rgb(41, 161, 151);
 }
+
 .title{
-    color: rgb(223, 219, 219);
+    color: rgb(255, 255, 255);
     text-align: center;
 }
+
 .btn{
-    text-align: center
+    text-align: center;
+    width: 100%;
+}
+
+.txt{
+    background-color: rgb(229, 247, 250);
+}
+
+.row{
+    padding-bottom: 20px;
+}
+
+#user{
+    padding-top: 10px;
+}
+
+#result{
+    width: 100%;
+    height: 280px;
+}
+
+#help{
+    height: 225px;
 }
