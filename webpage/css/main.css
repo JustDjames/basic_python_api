@@ -4,6 +4,7 @@ div{
 
 .background{
     background-color: rgb(41, 161, 151);
+    height: 600px;
 }
 
 .title{
@@ -24,13 +25,17 @@ div{
     padding-bottom: 20px;
 }
 
+.lower{
+    margin-top: 69px;
+}
+
 #user{
     padding-top: 10px;
 }
 
 #result{
     width: 100%;
-    height: 280px;
+    height: 420px;
 }
 
 #help{
