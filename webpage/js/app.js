@@ -23,10 +23,34 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     allBtn.addEventListener('click',()=>{
         console.log("all");
+        
+        fetch(url+"users",{
+        })
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data)
+            })
+            // .then(function(data){
+            //     let user = data.results;
+            //     return user.map(function(user){
+            //         let para = newElement('p');
+            //         append(res,para);
+            //     })
+            // })
+            .catch(error => 
+                console.error(error)
+            );
     })
 
     updateBtn.addEventListener('click',()=>{
         console.log("update");
     });
 
+    function newElement(element){
+        return document.createElement(element);
+    };
+
+    function append(parent,element){
+        return parent.appendChild(element);
+    };
 });
