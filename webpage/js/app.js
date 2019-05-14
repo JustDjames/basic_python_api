@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded',()=>{
-    console.log("working")
     // declaration of variables
     const url= "http://127.0.0.1:5000/";
     const res = document.getElementById('result');
@@ -22,21 +21,27 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
     allBtn.addEventListener('click',()=>{
-        console.log("all");
-        
-        fetch(url+"users",{
-        })
+        clear(res);
+        fetch(url+"users")
             .then(response => response.json())
             .then(data =>{
-                console.log(data)
+                data.forEach(element => {
+                    let name = newElement('p');
+                    name.innerHTML = "Name: " + element.name;
+                    append(res,name);
+                    
+                    let age = newElement('p');
+                    age.innerHTML = "age: " + element.age;
+                    append(res,age);
+
+                    let job = newElement('p');
+                    job.innerHTML = "job: " + element.job;
+                    append(res,job);
+
+                    let line = newElement('hr');
+                    append (res,line);
+                });
             })
-            // .then(function(data){
-            //     let user = data.results;
-            //     return user.map(function(user){
-            //         let para = newElement('p');
-            //         append(res,para);
-            //     })
-            // })
             .catch(error => 
                 console.error(error)
             );
@@ -53,4 +58,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     function append(parent,element){
         return parent.appendChild(element);
     };
+
+    function clear(parent){
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
 });
