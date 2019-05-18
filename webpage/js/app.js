@@ -31,11 +31,11 @@ document.addEventListener('DOMContentLoaded',()=>{
                     append(res,name);
                     
                     let age = newElement('p');
-                    age.innerHTML = "age: " + element.age;
+                    age.innerHTML = "Age: " + element.age;
                     append(res,age);
 
                     let job = newElement('p');
-                    job.innerHTML = "job: " + element.job;
+                    job.innerHTML = "Job: " + element.job;
                     append(res,job);
 
                     let line = newElement('hr');
