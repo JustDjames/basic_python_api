@@ -7,9 +7,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     const newBtn = document.getElementById('newbtn');
     const allBtn = document.getElementById('allbtn');
     const updateBtn = document.getElementById('updatebtn');
+    const userBox = document.getElementById('user');
 
     displayBtn.addEventListener('click',()=>{
-        console.log("display");
+        let user = userBox.value;
+        clear(res);
+        fetch(url+"user/"+user)
+            .then(response => response.json()) 
+            .then(data =>{
+                    printRes(data);
+            })
+            .catch(error =>
+                console.error(error)
+                );
     });
 
     deleteBtn.addEventListener('click',()=>{
@@ -26,20 +36,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             .then(response => response.json())
             .then(data =>{
                 data.forEach(element => {
-                    let name = newElement('p');
-                    name.innerHTML = "Name: " + element.name;
-                    append(res,name);
-                    
-                    let age = newElement('p');
-                    age.innerHTML = "Age: " + element.age;
-                    append(res,age);
-
-                    let job = newElement('p');
-                    job.innerHTML = "Job: " + element.job;
-                    append(res,job);
-
-                    let line = newElement('hr');
-                    append (res,line);
+                    printRes(element);
                 });
             })
             .catch(error => 
@@ -63,5 +60,22 @@ document.addEventListener('DOMContentLoaded',()=>{
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
-    }
+    };
+
+    function printRes(element){
+        let name = newElement('p');
+        name.innerHTML = "Name: " + element.name;
+        append(res,name);
+        
+        let age = newElement('p');
+        age.innerHTML = "Age: " + element.age;
+        append(res,age);
+
+        let job = newElement('p');
+        job.innerHTML = "Job: " + element.job;
+        append(res,job);
+
+        let line = newElement('hr');
+        append (res,line);
+    };
 });
