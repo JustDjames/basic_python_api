@@ -6,19 +6,19 @@ CORS(app)
 
 users = [
     {
-        "name": "Mack",
+        "name": "mack",
         "age": "34",
-        "job": "Plumber"
+        "job": "plumber"
     },
     {
-        "name": "Danielle",
+        "name": "danielle",
         "age": "26",
-        "job": "Programmer"
+        "job": "programmer"
     },
     {
-        "name": "Nick",
+        "name": "nick",
         "age": "48",
-        "job": "Dancer"
+        "job": "dancer"
     }
 ]
 
@@ -40,6 +40,7 @@ def get_users():
 
 @app.route('/user/<string:name>', methods=['GET'])
 def get_user(name):
+    name = name.lower()
     user = [user for user in users if user['name'] == name]
     if len(user) == True:
         return jsonify(user[0])
@@ -61,15 +62,16 @@ def create_user():
             return jsonify("user with that name already exists"), 400
     
     user = {
-        'name': request.json['name'],
-        'age': request.json['age'],
-        'job': request.json['job']
+        'name': request.json['name'].lower(),
+        'age': request.json['age'].lower(),
+        'job': request.json['job'].lower()
     }
     users.append(user)
     return jsonify(user), 201
 
 @app.route('/update/<string:name>',methods=['PUT'])
 def update_user(name):
+    name = name.lower()
     user = [user for user in users if user['name'] == name]
     if len(user) == 0:
         return jsonify('User not found'),404
@@ -82,12 +84,13 @@ def update_user(name):
     elif not 'job'in request.json or len(request.json['job']) == 0:
         return jsonify('Missing parameter. ensure request has job'), 400
     
-    user[0]['name'] = request.json.get('name', user[0]['name'])
-    user[0]['age'] = request.json.get('age', user[0]['age'])
-    user[0]['job'] = request.json.get('job', user[0]['job'])
+    user[0]['name'] = request.json.get('name', user[0]['name']).lower()
+    user[0]['age'] = request.json.get('age', user[0]['age']).lower()
+    user[0]['job'] = request.json.get('job', user[0]['job']).lower()
     return jsonify(user[0]), 201
 @app.route('/delete/<string:name>', methods=['DELETE'])
 def delete_user(name):
+    name = name.lower()
     user = [user for user in users if user['name'] == name]
     if len(user) == 0:
         return jsonify('User not found'), 404
