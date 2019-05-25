@@ -12,18 +12,30 @@ document.addEventListener('DOMContentLoaded',()=>{
     displayBtn.addEventListener('click',()=>{
         let user = userBox.value;
         clear(res);
+        userBox.value = '';
         fetch(url+"user/"+user)
-            .then(response => response.json()) 
+            .then(response => response.json())
             .then(data =>{
                     printRes(data);
             })
-            .catch(error =>
-                console.error(error)
-                );
+            .catch(error =>{
+                // console.error(error)
+                alert(error)
+            })
     });
 
     deleteBtn.addEventListener('click',()=>{
         console.log("delete");
+        let user =userBox.value;
+        clear(res);
+        userBox.value= '';
+        fetch(url+"delete/"+user,{
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data);
+            })
     });
     
     newBtn.addEventListener('click',()=>{
