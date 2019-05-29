@@ -11,18 +11,23 @@ document.addEventListener('DOMContentLoaded',()=>{
     const modalTitle = document.getElementById('ModalTitle');
 
     displayBtn.addEventListener('click',()=>{
-        let user = userBox.value;
-        clear(res);
-        userBox.value = '';
-        fetch(url+"user/"+user)
-            .then(response => response.json())
-            .then(data =>{
-                    printRes(data);
-            })
-            .catch(error =>{
-                // console.error(error)
-                alert(error)
-            })
+        let user
+        if(userBox.value){
+            user = userBox.value;
+            clear(res);
+            userBox.value = '';
+            fetch(url+"user/"+user)
+                .then(response => response.json())
+                .then(data =>{
+                        printRes(data);
+                })
+                .catch(error =>{
+                    // console.error(error)
+                    alert(error)
+                })
+        }else{
+            alert('Please enter a user');
+        }
     });
 
     deleteBtn.addEventListener('click',()=>{
