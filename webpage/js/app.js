@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     
     newBtn.addEventListener('click',()=>{
         console.log("new");
+        $('#exampleModalCenter').modal('show')
     });
 
     allBtn.addEventListener('click',()=>{
