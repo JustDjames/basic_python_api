@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const allBtn = document.getElementById('allbtn');
     const updateBtn = document.getElementById('updatebtn');
     const userBox = document.getElementById('user');
+    const modalTitle = document.getElementById('ModalTitle');
 
     displayBtn.addEventListener('click',()=>{
         let user = userBox.value;
@@ -40,7 +41,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     
     newBtn.addEventListener('click',()=>{
         console.log("new");
-        $('#exampleModalCenter').modal('show')
+        $('#UserModal').modal('show');
+        modalTitle.innerHTML = 'New User';
     });
 
     allBtn.addEventListener('click',()=>{
