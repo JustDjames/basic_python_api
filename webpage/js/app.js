@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     const updateBtn = document.getElementById('updatebtn');
     const userBox = document.getElementById('user');
     const modalTitle = document.getElementById('ModalTitle');
+    const submitBtn = document.getElementById('ModalSubmitBtn');
+    const modalName = document.getElementById('modalName');
+    const modalAge = document.getElementById('modalAge');
+    const modalJob = document.getElementById('modalJob');
 
     displayBtn.addEventListener('click',()=>{
         let user
@@ -22,8 +26,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                         printRes(data);
                 })
                 .catch(error =>{
-                    // console.error(error)
-                    alert(error)
+                    console.error(error)
                 })
         }else{
             alert('Please enter a user');
@@ -45,9 +48,30 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
     
     newBtn.addEventListener('click',()=>{
-        console.log("new");
         $('#UserModal').modal('show');
         modalTitle.innerHTML = 'New User';
+        submitBtn.addEventListener('click',()=>{
+            if(!modalName.value){
+                alert('Please enter a Name for the new user')
+            }else if (!modalAge.value){
+                alert('Please enter an Age for the new user')
+            }else if(!modalJob.value){
+                alert('Please enter a Job for the new user')
+            }else{
+                let userJson = modalToJson();
+                clear(res);
+                fetch(url+"new",{
+                    method: 'POST',
+                    body: userJson,
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => alert('Success:' + JSON.stringify(data)))
+                .catch(error => console.error('Error:',error))        
+            }
+        });
     });
 
     allBtn.addEventListener('click',()=>{
@@ -66,6 +90,48 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     updateBtn.addEventListener('click',()=>{
         console.log("update");
+        if(userBox.value){
+            user = userBox.value;
+            clear(res);
+            $('#UserModal').modal('show');
+            modalTitle.innerHTML = 'New User';
+            userBox.value = '';
+            fetch(url+"user/"+user)
+                .then(response => response.json())
+                .then(data =>{
+                        modalName.value = data.name;
+                        modalAge.value = data.age;
+                        modalJob.value = data.job;
+                })
+                .catch(error =>{
+                    console.error(error)
+                })
+            
+            submitBtn.addEventListener('click',()=>{
+                if(!modalName.value){
+                    alert('Please enter a Name for the new user')
+                }else if (!modalAge.value){
+                    alert('Please enter an Age for the new user')
+                }else if(!modalJob.value){
+                    alert('Please enter a Job for the new user')
+                }else{
+                    let userJson = modalToJson();
+                    clear(res);
+                    fetch(url+"update/"+user,{
+                        method: 'PUT',
+                        body: userJson,
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => alert('Success:' + JSON.stringify(data)))
+                    .catch(error => console.error('Error:',error));        
+                }
+            });
+        }else{
+            alert('Please enter a user');
+        }
     });
 
     function newElement(element){
@@ -98,4 +164,12 @@ document.addEventListener('DOMContentLoaded',()=>{
         let line = newElement('hr');
         append (res,line);
     };
+    function modalToJson(){
+        let Obj = { "name":"","age":"","job":""};
+        Obj.name = modalName.value;
+        Obj.age = modalAge.value;
+        Obj.job = modalJob.value;
+        let Json = JSON.stringify(Obj);
+        return Json
+    }
 });
