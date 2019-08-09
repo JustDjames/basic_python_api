@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     const modalName = document.getElementById('modalName');
     const modalAge = document.getElementById('modalAge');
     const modalJob = document.getElementById('modalJob');
+    let user;
 
     displayBtn.addEventListener('click',()=>{
-        let user
         if(userBox.value){
             user = userBox.value;
             clear(res);
@@ -34,17 +34,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
     deleteBtn.addEventListener('click',()=>{
-        console.log("delete");
-        let user =userBox.value;
-        clear(res);
-        userBox.value= '';
-        fetch(url+"delete/"+user,{
-            method: 'DELETE'
-        })
-            .then(response => response.json())
-            .then(data =>{
-                console.log(data);
+        if(userBox.value){
+            user = userBox.value;
+            clear(res);
+            userBox.value= '';
+            fetch(url+"delete/"+user,{
+                method: 'DELETE'
             })
+                .then(response => response.json())
+                .then(data =>{
+                    console.log(data);
+                })
+        }else{
+            alert('Please enter a user')
+        }
     });
     
     newBtn.addEventListener('click',()=>{
