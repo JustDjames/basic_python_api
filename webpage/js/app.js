@@ -21,12 +21,13 @@ document.addEventListener('DOMContentLoaded',()=>{
             clear(res);
             userBox.value = '';
             fetch(url+"user/"+user)
+                .then(response => checkErrors(response))
                 .then(response => response.json())
                 .then(data =>{
                         printRes(data);
                 })
                 .catch(error =>{
-                    console.error(error)
+                    console.error(error);
                 })
         }else{
             alert('Please enter a user');
@@ -41,9 +42,10 @@ document.addEventListener('DOMContentLoaded',()=>{
             fetch(url+"delete/"+user,{
                 method: 'DELETE'
             })
+                .then(response => checkErrors(response))
                 .then(response => response.json())
                 .then(data =>{
-                    console.log(data);
+                    alert('Success:' + JSON.stringify(data));
                 })
         }else{
             alert('Please enter a user')
@@ -62,6 +64,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                 alert('Please enter a Job for the new user')
             }else{
                 let userJson = modalToJson();
+                modalClear();
+                $('#UserModal').modal('hide');
                 clear(res);
                 fetch(url+"new",{
                     method: 'POST',
@@ -70,9 +74,11 @@ document.addEventListener('DOMContentLoaded',()=>{
                         'Content-Type': 'application/json'
                     }
                 })
+                .then(response => checkErrors(response))
                 .then(response => response.json())
                 .then(data => alert('Success:' + JSON.stringify(data)))
-                .catch(error => console.error('Error:',error))        
+                .catch(error => console.error('Error:',error))
+                
             }
         });
     });
@@ -80,6 +86,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     allBtn.addEventListener('click',()=>{
         clear(res);
         fetch(url+"users")
+            .then(response => checkErrors(response))
             .then(response => response.json())
             .then(data =>{
                 data.forEach(element => {
@@ -92,7 +99,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     })
 
     updateBtn.addEventListener('click',()=>{
-        console.log("update");
         if(userBox.value){
             user = userBox.value;
             clear(res);
@@ -100,6 +106,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             modalTitle.innerHTML = 'New User';
             userBox.value = '';
             fetch(url+"user/"+user)
+                .then(response => checkErrors(response))
                 .then(response => response.json())
                 .then(data =>{
                         modalName.value = data.name;
@@ -119,6 +126,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                     alert('Please enter a Job for the new user')
                 }else{
                     let userJson = modalToJson();
+                    modalClear();
+                    $('#UserModal').modal('hide');       
                     clear(res);
                     fetch(url+"update/"+user,{
                         method: 'PUT',
@@ -127,9 +136,10 @@ document.addEventListener('DOMContentLoaded',()=>{
                             'Content-Type': 'application/json'
                         }
                     })
+                    .then(response => checkErrors(response))
                     .then(response => response.json())
                     .then(data => alert('Success:' + JSON.stringify(data)))
-                    .catch(error => console.error('Error:',error));        
+                    .catch(error => console.error('Error:',error));
                 }
             });
         }else{
@@ -150,6 +160,12 @@ document.addEventListener('DOMContentLoaded',()=>{
             parent.removeChild(parent.firstChild);
         }
     };
+
+    function modalClear(){
+        modalName.value = '';
+        modalAge.value = '';
+        modalJob.value = '';  
+    }
 
     function printRes(element){
         let name = newElement('p');
@@ -174,5 +190,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         Obj.job = modalJob.value;
         let Json = JSON.stringify(Obj);
         return Json
-    }
+    };
+    // checks if response contains any errors. if it does returns true, otherwise returns false
+    function checkErrors(response) {
+        if(!response.ok){
+            alert('ERROR: ' + response.statusText);
+            throw Error(response.statusText);
+        }else{
+            return response;
+        }
+    };
 });
