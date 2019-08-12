@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     const modalAge = document.getElementById('modalAge');
     const modalJob = document.getElementById('modalJob');
     let user;
-    let errCheck;
 
     displayBtn.addEventListener('click',()=>{
         if(userBox.value){
@@ -65,6 +64,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                 alert('Please enter a Job for the new user')
             }else{
                 let userJson = modalToJson();
+                modalClear();
+                $('#UserModal').modal('hide');
                 clear(res);
                 fetch(url+"new",{
                     method: 'POST',
@@ -76,7 +77,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                 .then(response => checkErrors(response))
                 .then(response => response.json())
                 .then(data => alert('Success:' + JSON.stringify(data)))
-                .catch(error => console.error('Error:',error))        
+                .catch(error => console.error('Error:',error))
+                
             }
         });
     });
@@ -97,7 +99,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     })
 
     updateBtn.addEventListener('click',()=>{
-        console.log("update");
         if(userBox.value){
             user = userBox.value;
             clear(res);
@@ -125,6 +126,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                     alert('Please enter a Job for the new user')
                 }else{
                     let userJson = modalToJson();
+                    modalClear();
+                    $('#UserModal').modal('hide');       
                     clear(res);
                     fetch(url+"update/"+user,{
                         method: 'PUT',
@@ -136,7 +139,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                     .then(response => checkErrors(response))
                     .then(response => response.json())
                     .then(data => alert('Success:' + JSON.stringify(data)))
-                    .catch(error => console.error('Error:',error));        
+                    .catch(error => console.error('Error:',error));
                 }
             });
         }else{
@@ -157,6 +160,12 @@ document.addEventListener('DOMContentLoaded',()=>{
             parent.removeChild(parent.firstChild);
         }
     };
+
+    function modalClear(){
+        modalName.value = '';
+        modalAge.value = '';
+        modalJob.value = '';  
+    }
 
     function printRes(element){
         let name = newElement('p');
@@ -185,7 +194,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     // checks if response contains any errors. if it does returns true, otherwise returns false
     function checkErrors(response) {
         if(!response.ok){
-            // console.log('here!!');
             alert('ERROR: ' + response.statusText);
             throw Error(response.statusText);
         }else{
